@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WhoIsHere</string>
+    <string name="facebook_app_id">1981009602174913</string>
+    <string name="facebook_application_id">1981009602174913</string>
+    <string name="fb_login_protocol_scheme">fb1981009602174913</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

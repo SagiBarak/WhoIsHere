@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "325089900819",
+    "firebase_url": "https://whoishere-e5e81.firebaseio.com",
+    "project_id": "whoishere-e5e81",
+    "storage_bucket": "whoishere-e5e81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325089900819:android:685283e9e15e584d",
+        "android_client_info": {
+          "package_name": "com.sagib.whoishere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325089900819-17o688r94uittabmp13su9mcposd9vf3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sagib.whoishere",
+            "certificate_hash": "ddd75a478065f2b0d11e66e24992a6c5fe77f5d5"
+          }
+        },
+        {
+          "client_id": "325089900819-af3b1ijbjin94dc23kun3v2rvus7o880.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnVZXMm7taCiFBvFZq4PceiGJT24YMg2I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325089900819-af3b1ijbjin94dc23kun3v2rvus7o880.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
