@@ -3,7 +3,6 @@
     <string name="facebook_app_id">1981009602174913</string>
     <string name="facebook_application_id">1981009602174913</string>
     <string name="fb_login_protocol_scheme">fb1981009602174913</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="req_desc">In order to use this application, we need to know your location.\nBut we need you to grant access for us.\nWhen you press the \"Grant Access\" button, you'll be prompt to grant access of your location.</string>
+    <string name="req_approved">Great!\nAre you ready to know Who Is Here?</string>
 </resources>

@@ -1,7 +1,10 @@
 package com.sagib.whoishere;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -39,8 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                updateUI();
-                return;
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PermissionFragment(), "Permission").commit();
+                } else {
+                    updateUI();
+                    return;
+                }
             } else {
                 checkForUser();
                 // Sign in failed
@@ -66,7 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkForUser() {
         if (auth.getCurrentUser() != null) {
-            updateUI();
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PermissionFragment(), "Permission").commit();
+            } else {
+                updateUI();
+            }
         } else {
             // not signed in
             startActivityForResult(
@@ -83,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateUI() {
         Toast.makeText(this, "Updating UI...", Toast.LENGTH_SHORT).show();
-//        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new Fragment(), "HomeFragment").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame, new HomeFragment(), "HomeFragment").commit();
     }
 
     private void showToast(String message) {
