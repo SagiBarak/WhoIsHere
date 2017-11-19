@@ -1,18 +1,27 @@
 package com.sagib.whoishere;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 
@@ -25,12 +34,20 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     @BindView(R.id.frame)
     FrameLayout frame;
+    Context context;
+    SharedPreferences prefs;
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+        context = this;
+        prefs = getSharedPreferences("User", MODE_PRIVATE);
         ButterKnife.bind(this);
+        Fresco.initialize(this);
         checkForUser();
     }
 
@@ -39,15 +56,23 @@ public class MainActivity extends AppCompatActivity {
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
-
             // Successfully signed in
             if (resultCode == RESULT_OK) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PermissionFragment(), "Permission").commit();
-                } else {
-                    updateUI();
-                    return;
-                }
+                DatabaseReference newUser = FirebaseDatabase.getInstance().getReference("Users").push();
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                User user = new User(currentUser.getDisplayName(), currentUser.getPhotoUrl().toString(), currentUser.getEmail(), newUser.getKey(), currentUser.getUid(), null);
+                String userJson = gson.toJson(user);
+                prefs.edit().putString("User", userJson).commit();
+                newUser.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame, new PermissionFragment(), "Permission").commit();
+                        } else {
+                            updateUI();
+                        }
+                    }
+                });
             } else {
                 checkForUser();
                 // Sign in failed
@@ -67,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }
-            showToast("Unknown Response");
         }
     }
 
@@ -84,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
                             .setIsSmartLockEnabled(false)
+                            .setTheme(R.style.FirebaseLoginTheme)
+                            .setLogo(R.drawable.original_logo)
                             .setAvailableProviders(
                                     Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
                                             new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))

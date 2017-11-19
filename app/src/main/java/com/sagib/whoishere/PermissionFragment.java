@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +42,8 @@ public class PermissionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_permission, container, false);
         unbinder = ButterKnife.bind(this, v);
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        tvUserTitle.setText(String.format("Dear %s,", userName));
         tvApprovedPermission.setVisibility(View.GONE);
         btnStart.setVisibility(View.GONE);
         return v;
