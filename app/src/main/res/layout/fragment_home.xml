@@ -6,6 +6,41 @@
     android:layout_height="match_parent"
     tools:context="com.sagib.whoishere.HomeFragment">
 
+    <RadioGroup
+        android:id="@+id/rgSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCurentLocation">
+
+        <RadioButton
+            android:id="@+id/rbFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Friends"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/rbPublic"
+            app:layout_constraintTop_toBottomOf="@id/tvCurentLocation" />
+
+        <RadioButton
+            android:id="@+id/rbPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Public"
+            app:layout_constraintEnd_toStartOf="@+id/rbFriends"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCurentLocation" />
+    </RadioGroup>
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/btnProfile"
         android:layout_width="50dp"
@@ -14,11 +49,11 @@
         android:layout_marginRight="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        fresco:placeholderImage="@drawable/profile"
-        fresco:roundedCornerRadius="5dp"
-        app:roundingBorderWidth="1dp"
         app:roundingBorderColor="@color/colorPrimaryDark"
-        fresco:roundAsCircle="true" />
+        app:roundingBorderWidth="1dp"
+        fresco:placeholderImage="@drawable/profile"
+        fresco:roundAsCircle="true"
+        fresco:roundedCornerRadius="5dp" />
 
     <ImageView
         android:id="@+id/btnMessages"
@@ -28,7 +63,7 @@
         android:layout_marginLeft="24dp"
         android:src="@drawable/chat"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <ImageView
         android:id="@+id/btnHome"
@@ -56,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:ems="14"
         android:gravity="center"
         android:text="Searching for location..."
@@ -71,14 +106,14 @@
         android:id="@+id/rvUsersInRadius"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="2dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toTopOf="@id/btnHome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCurentLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/rgSelection" />
 
     <TextView
         android:id="@+id/tvWelcome"

@@ -8,18 +8,19 @@ public class User {
     String email;
     String uuid;
     String firebaseUID;
+    String facebookUID;
     Location lastKnownLocation;
 
     public User() {
     }
 
-    public User(String displayName, String profileImg, String email, String uuid, String firebaseUID, Location lastKnownLocation) {
-
+    public User(String displayName, String profileImg, String email, String uuid, String firebaseUID, String facebookUID, Location lastKnownLocation) {
         this.displayName = displayName;
         this.profileImg = profileImg;
         this.email = email;
         this.uuid = uuid;
         this.firebaseUID = firebaseUID;
+        this.facebookUID = facebookUID;
         this.lastKnownLocation = lastKnownLocation;
     }
 
@@ -63,6 +64,14 @@ public class User {
         this.firebaseUID = firebaseUID;
     }
 
+    public String getFacebookUID() {
+        return facebookUID;
+    }
+
+    public void setFacebookUID(String facebookUID) {
+        this.facebookUID = facebookUID;
+    }
+
     public Location getLastKnownLocation() {
         return lastKnownLocation;
     }
@@ -79,6 +88,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", firebaseUID='" + firebaseUID + '\'' +
+                ", facebookUID='" + facebookUID + '\'' +
                 ", lastKnownLocation=" + lastKnownLocation +
                 '}';
     }

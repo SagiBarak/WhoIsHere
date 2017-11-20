@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
@@ -19,6 +20,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -60,7 +62,17 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 DatabaseReference newUser = FirebaseDatabase.getInstance().getReference("Users").push();
                 FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                User user = new User(currentUser.getDisplayName(), currentUser.getPhotoUrl().toString(), currentUser.getEmail(), newUser.getKey(), currentUser.getUid(), null);
+                String facebookUID = "noFacebook";
+                String userUID = newUser.getKey();
+                for (UserInfo user : FirebaseAuth.getInstance().getCurrentUser().getProviderData()) {
+                    if (user.getProviderId().equals("facebook.com")) {
+                        facebookUID = AccessToken.getCurrentAccessToken().getUserId();
+                        userUID = facebookUID;
+                        newUser = FirebaseDatabase.getInstance().getReference("Users").child(userUID);
+
+                    }
+                }
+                User user = new User(currentUser.getDisplayName(), currentUser.getPhotoUrl().toString(), currentUser.getEmail(), userUID, currentUser.getUid(), facebookUID, null);
                 String userJson = gson.toJson(user);
                 prefs.edit().putString("User", userJson).commit();
                 newUser.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -111,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                             .setTheme(R.style.FirebaseLoginTheme)
                             .setLogo(R.drawable.original_logo)
                             .setAvailableProviders(
-                                    Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                                    Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).setPermissions(Arrays.asList("user_friends")).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
                             .build(),
                     RC_SIGN_IN);
         }

@@ -15,13 +15,20 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapLabel;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -63,12 +70,19 @@ public class HomeFragment extends Fragment {
     Gson gson = new Gson();
     SharedPreferences prefs;
     User myUser;
+    @BindView(R.id.rbFriends)
+    RadioButton rbFriends;
+    @BindView(R.id.rbPublic)
+    RadioButton rbPublic;
+    @BindView(R.id.rgSelection)
+    RadioGroup rgSelection;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, v);
+        rgSelection.check(R.id.rbFriends);
         prefs = getContext().getSharedPreferences("User", Context.MODE_PRIVATE);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -117,6 +131,14 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
+        Log.d("SagiB", AccessToken.getCurrentAccessToken().getUserId());
+        new GraphRequest(AccessToken.getCurrentAccessToken(), AccessToken.getCurrentAccessToken().getUserId() + "/friends", null, HttpMethod.GET, new GraphRequest.Callback() {
+            public void onCompleted(GraphResponse response) {
+            /* handle the result */
+                Log.d("SagiB", response.toString());
+            }
+        }
+        ).executeAsync();
         return v;
     }
 
@@ -128,8 +150,8 @@ public class HomeFragment extends Fragment {
                 Address address = fromLocation.get(0);
                 StringBuilder thisAddress = new StringBuilder("Your current location is:\n");
                 for (int i = 0; i < 3; i++) {
-                    if (address.getAddressLine(i) != null){
-                        if (i == 0){
+                    if (address.getAddressLine(i) != null) {
+                        if (i == 0) {
                             thisAddress.append(address.getAddressLine(i));
                         } else {
                             thisAddress.append(", ").append(address.getAddressLine(i));
