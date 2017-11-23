@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        Toast.makeText(this, "Updating UI...", Toast.LENGTH_SHORT).show();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, new HomeFragment(), "HomeFragment").commit();
     }
 

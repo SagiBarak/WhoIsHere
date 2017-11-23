@@ -1,7 +1,5 @@
 package com.sagib.whoishere;
 
-import android.location.Location;
-
 public class User {
     String displayName;
     String profileImg;
@@ -9,19 +7,19 @@ public class User {
     String uuid;
     String firebaseUID;
     String facebookUID;
-    Location lastKnownLocation;
+    mLocation mLocation;
 
-    public User() {
-    }
-
-    public User(String displayName, String profileImg, String email, String uuid, String firebaseUID, String facebookUID, Location lastKnownLocation) {
+    public User(String displayName, String profileImg, String email, String uuid, String firebaseUID, String facebookUID, com.sagib.whoishere.mLocation mLocation) {
         this.displayName = displayName;
         this.profileImg = profileImg;
         this.email = email;
         this.uuid = uuid;
         this.firebaseUID = firebaseUID;
         this.facebookUID = facebookUID;
-        this.lastKnownLocation = lastKnownLocation;
+        this.mLocation = mLocation;
+    }
+
+    public User() {
     }
 
     public String getDisplayName() {
@@ -72,12 +70,12 @@ public class User {
         this.facebookUID = facebookUID;
     }
 
-    public Location getLastKnownLocation() {
-        return lastKnownLocation;
+    public com.sagib.whoishere.mLocation getmLocation() {
+        return mLocation;
     }
 
-    public void setLastKnownLocation(Location lastKnownLocation) {
-        this.lastKnownLocation = lastKnownLocation;
+    public void setmLocation(com.sagib.whoishere.mLocation mLocation) {
+        this.mLocation = mLocation;
     }
 
     @Override
@@ -89,7 +87,7 @@ public class User {
                 ", uuid='" + uuid + '\'' +
                 ", firebaseUID='" + firebaseUID + '\'' +
                 ", facebookUID='" + facebookUID + '\'' +
-                ", lastKnownLocation=" + lastKnownLocation +
+                ", mLocation=" + mLocation +
                 '}';
     }
 }
